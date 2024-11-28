@@ -1,12 +1,22 @@
-import { Body, Controller,Get, Param, Patch, Query, HttpException,HttpStatus } from '@nestjs/common';
+import { Body, Controller,Get, Param, Patch, Query, HttpException,HttpStatus, Post } from '@nestjs/common';
 import { QuestionDto } from './dto/question.dbo'
+import {QuestionService} from './question.service'
 
 @Controller('question')
 export class QuestionController {
-    
+    constructor(
+        private readonly questionService: QuestionService
+    ) {
+
+    }
     @Get('test')
     getTest():string {
         throw new HttpException('获取数据失败',HttpStatus.BAD_REQUEST)
+    }
+
+    @Post()
+    create(data){
+        return this.questionService.create()
     }
     @Get()
     findAll(
@@ -25,11 +35,14 @@ export class QuestionController {
     findOne(
         @Param('id') id:string
     ){
-        return {
-            id:id+new Date(),
-            title:'aaaa',
-            desc:'bbb'
-        }
+        return this.questionService.findOne(id)
+        // return {
+        //     id:id,
+        //     time:new Date().getTime(),
+        //     title:'aaaa',
+        //     desc:'bbb',
+        //     host:process.env.MONGO_HOST
+        // }
     }
     @Patch(':id')
     updataOne(
