@@ -1,16 +1,21 @@
-import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
-import { Observable,map } from 'rxjs';
+import {
+  CallHandler,
+  ExecutionContext,
+  Injectable,
+  NestInterceptor,
+} from '@nestjs/common';
+import { Observable, map } from 'rxjs';
 
 @Injectable()
 export class TransformInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
-        map((data)=>{
-            return {
-                status: 0,
-                data
-            }
-        })
-    )
+      map((data) => {
+        return {
+          error: 0,
+          data,
+        };
+      }),
+    );
   }
 }
