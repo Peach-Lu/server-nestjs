@@ -27,42 +27,29 @@ export class QuestionController {
   }
 
   @Get()
-  findAll(
+  async findAll(
     @Query('keyword') keyword: string,
     @Query('page') page: number,
     @Query('pageSize') pageSize: number,
   ) {
     console.log(keyword, page, pageSize);
+    const list =  await this.questionService.findAll({keyword, page, pageSize})
+    const count = await this.questionService.countAll({keyword})
     return {
-      list: ['a', 'b', 'c'],
-      keyword,
-      count: 10,
-    };
+        list,
+        count
+    }
   }
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.questionService.findOne(id);
-    // return {
-    //     id:id,
-    //     time:new Date().getTime(),
-    //     title:'aaaa',
-    //     desc:'bbb',
-    //     host:process.env.MONGO_HOST
-    // }
+   
   }
   @Post(':id')
   updateOne(@Param('id') id: string, @Body() questionDto: QuestionDto) {
     console.log('questionDto', questionDto);
     console.log('id', id);
-    return this.questionService.update(id, {
-        "title": "修改titile22222",
-        "desc": "修改desc",
-    });
-    // return {
-    //   id,
-    //   title: questionDto.title,
-    //   desc: questionDto.desc,
-    // };
+    return this.questionService.update(id,questionDto);
   }
 
   @Delete(':id')
