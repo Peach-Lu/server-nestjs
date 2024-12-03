@@ -1,6 +1,7 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from 'src/user/dto/user.dto';
+import { AuthGuard } from './auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -10,5 +11,13 @@ export class AuthController {
     async login(@Body() userInfo:CreateUserDto){
          const { username,password } = userInfo
          return await this.authService.signIn(username,password)
+    }
+    @UseGuards(AuthGuard) //增加token解析
+    @Get('profile')
+    async getProfile(
+        @Request() req
+    ){
+        console.log('req',req)
+        return req.user
     }
 }
