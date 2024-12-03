@@ -7,7 +7,7 @@ export class TransformInterceptor implements NestInterceptor {
     return next.handle().pipe(
         map((data)=>{
             return {
-                error: 0,
+                status: 0,
                 data
             }
         })

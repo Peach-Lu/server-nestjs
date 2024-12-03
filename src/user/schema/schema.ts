@@ -1,17 +1,22 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 
-export type QuestionDocument = HydratedDocument<Question>;
+export type CatDocument = HydratedDocument<User>;
 
 @Schema({
     timestamps:true // 记录时间戳 createdAt 和 updateAt
 })
-export class Question{
+export class User {
   @Prop({required: true})
-  title: string;
+  username: string;
 
   @Prop()
-  desc: string;
+  password: string;
+
+  @Prop()
+  nikename: string;
+
+
 }
 
-export const QuestionSchema = SchemaFactory.createForClass(Question);
+export const UserSchema = SchemaFactory.createForClass(User);
