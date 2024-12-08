@@ -24,7 +24,7 @@ export class QuestionController {
 
   @Post()
   create(@Request() req) {
-    const {username} = req.user
+    const { username } = req.user;
     return this.questionService.create(username);
   }
 
@@ -35,23 +35,26 @@ export class QuestionController {
     @Query('pageSize') pageSize: number,
   ) {
     console.log(keyword, page, pageSize);
-    const list =  await this.questionService.findAll({keyword, page, pageSize})
-    const count = await this.questionService.countAll({keyword})
+    const list = await this.questionService.findAll({
+      keyword,
+      page,
+      pageSize,
+    });
+    const count = await this.questionService.countAll({ keyword });
     return {
-        list,
-        count
-    }
+      list,
+      count,
+    };
   }
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.questionService.findOne(id);
-   
   }
   @Post(':id')
   updateOne(@Param('id') id: string, @Body() questionDto: QuestionDto) {
     console.log('questionDto', questionDto);
     console.log('id', id);
-    return this.questionService.update(id,questionDto);
+    return this.questionService.update(id, questionDto);
   }
 
   @Delete(':id')

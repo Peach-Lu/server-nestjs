@@ -2,15 +2,9 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { QuestionModule } from './question/question.module';
+import { UserModule } from './user/user.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
-import { UsersController } from './users/users.controller';
-import { UsersModule } from './users/users.module';
-import { User、nestController } from './g/user、nest/user、nest.controller';
-import { UsersModule } from './users/users.module';
-import { UsersService } from './users/users.service';
-import { UsersModule } from './users/users.module';
-import { UsersController } from './users/users.controller';
 
 @Module({
   imports: [
@@ -19,9 +13,9 @@ import { UsersController } from './users/users.controller';
       `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_DATABASE}`,
     ),
     QuestionModule,
-    UsersModule,
+    UserModule,
   ],
-  controllers: [AppController, UsersController, User、nestController],
-  providers: [AppService, UsersService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

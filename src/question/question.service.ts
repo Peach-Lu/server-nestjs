@@ -8,10 +8,10 @@ export class QuestionService {
     // 依赖注入
     @InjectModel(Question.name) private readonly questionModel,
   ) {}
-  async create(username:string) {
+  async create(username: string) {
     const question = await this.questionModel({
       title: 'title' + Date.now(),
-      author:username,
+      author: username,
       desc: 'desc',
     });
     return await question.save();
@@ -32,12 +32,12 @@ export class QuestionService {
       whereOpt.title = { $regex: reg }; //模糊搜索
     }
     return await this.questionModel
-    .find(whereOpt)
-    .sort({ _id: -1 }) // 逆序排序
-    .skip((page - 1) * pageSize) //分页
-    .limit(pageSize) // 页数
+      .find(whereOpt)
+      .sort({ _id: -1 }) // 逆序排序
+      .skip((page - 1) * pageSize) //分页
+      .limit(pageSize); // 页数
   }
-  async countAll({keyword=''}){
+  async countAll({ keyword = '' }) {
     const whereOpt: any = {};
     if (keyword) {
       const reg = new RegExp(keyword, 'i');
