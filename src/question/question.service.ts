@@ -17,12 +17,12 @@ export class QuestionService {
       componentList: [
         {
           fe_id: nanoid(),
-          type:'questionInfo',
-          title:'问卷信息',
-          props:{
-            title:'问卷标题',
-            desc:'问卷描述.....'
-          }
+          type: 'questionInfo',
+          title: '问卷信息',
+          props: {
+            title: '问卷标题',
+            desc: '问卷描述.....',
+          },
         },
       ],
     });
@@ -37,20 +37,37 @@ export class QuestionService {
   async findOne(id: string) {
     return await this.questionModel.findById(id);
   }
-  async findAll({ keyword = '', page = 1, pageSize = 10 }: any) {
-    const whereOpt: any = {};
+  async findAllList({
+    keyword = '',
+    page = 1,
+    pageSize = 10,
+    isDeleted = false,
+    isStar,
+    author = '',
+  }: any) {
+    
+    const whereOpt: any = {
+      author,
+      isDeleted,
+    };
+    if (isStar !== null) whereOpt.isStar = isStar;
     if (keyword) {
       const reg = new RegExp(keyword, 'i');
       whereOpt.title = { $regex: reg }; //模糊搜索
     }
+    console.log('whereOpt',whereOpt);
     return await this.questionModel
       .find(whereOpt)
       .sort({ _id: -1 }) // 逆序排序
       .skip((page - 1) * pageSize) //分页
       .limit(pageSize); // 页数
   }
-  async countAll({ keyword = '' }) {
-    const whereOpt: any = {};
+  async countAll({ keyword = '', isDeleted = false, isStar, author = '' }) {
+    const whereOpt: any = {
+      author,
+      isDeleted,
+    };
+    if (isStar !== null) whereOpt.isStar = isStar;
     if (keyword) {
       const reg = new RegExp(keyword, 'i');
       whereOpt.title = { $regex: reg }; //模糊搜索
