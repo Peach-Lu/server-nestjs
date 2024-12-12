@@ -28,11 +28,13 @@ export class QuestionService {
     });
     return await question.save();
   }
-  async delete(id: string) {
-    return await this.questionModel.findByIdAndDelete(id);
+  async delete(id: string, author: string) {
+    // return await this.questionModel.findByIdAndDelete(id);
+    const res = await this.questionModel.findOneAndDelete({ _id: id, author });
+    return res;
   }
-  async update(id: string, updateData: object) {
-    return await this.questionModel.updateOne({ _id: id }, updateData);
+  async update(id: string, updateData: object, author?: string) {
+    return await this.questionModel.updateOne({ _id: id, author }, updateData);
   }
   async findOne(id: string) {
     return await this.questionModel.findById(id);
@@ -55,7 +57,6 @@ export class QuestionService {
       const reg = new RegExp(keyword, 'i');
       whereOpt.title = { $regex: reg }; //模糊搜索
     }
-    console.log('whereOpt',whereOpt);
     return await this.questionModel
       .find(whereOpt)
       .sort({ _id: -1 }) // 逆序排序

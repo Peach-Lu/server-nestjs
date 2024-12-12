@@ -39,10 +39,6 @@ export class QuestionController {
   ) {
     console.log(keyword, page, pageSize);
     const { username } = req.user;
-    console.log('req', req);
-    console.log('req.username', req.username);
-    console.log('req', req.user);
-
     const list = await this.questionService.findAllList({
       keyword,
       page,
@@ -73,8 +69,18 @@ export class QuestionController {
     return this.questionService.update(id, questionDto);
   }
 
+  @Patch(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() questionDto: QuestionDto,
+    @Request() req,
+  ) {
+    const { username } = req.user;
+    return await this.questionService.update(id, questionDto, username);
+  }
   @Delete(':id')
   deleteOne(@Param('id') id: string, @Request() req) {
-    return this.questionService.delete(id);
+    const { username } = req.user;
+    return this.questionService.delete(id, username);
   }
 }
