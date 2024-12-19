@@ -33,6 +33,12 @@ export class QuestionService {
     const res = await this.questionModel.findOneAndDelete({ _id: id, author });
     return res;
   }
+  async deleteMany(ids:string[],author:string){
+    const res = await this.questionModel.deleteMany({
+        _id:{$in:ids},
+        author
+    })
+  }
   async update(id: string, updateData: object, author?: string) {
     return await this.questionModel.updateOne({ _id: id, author }, updateData);
   }
